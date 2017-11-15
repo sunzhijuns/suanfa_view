@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.LinkedList;
 
 public class AlgoFrame extends JFrame {
     private int canvasWidth;
@@ -29,10 +30,12 @@ public class AlgoFrame extends JFrame {
         return canvasHeight;
     }
     // 自己的数据
-    private int[] money;
+    private Circle circle;
+    private LinkedList<Point> points;
 
-    public void render(int[] money) {
-        this.money = money;
+    public void render(Circle circle, LinkedList<Point> points) {
+        this.circle = circle;
+        this.points = points;
         repaint();
     }
 
@@ -50,17 +53,18 @@ public class AlgoFrame extends JFrame {
             g2d.addRenderingHints(hints);
 
             // 具体绘制
-
-            int w = canvasWidth / money.length;
-            for (int i = 0; i < money.length; i++) {
-                if (money[i] > 0){
-                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.Blue);
-                    AlgoVisHelper.fillRectangle(g2d,i * w + 1,canvasHeight/2 - money[i],w - 1, money[i]);
-                }else if (money[i] < 0){
-                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.Red);
-                    AlgoVisHelper.fillRectangle(g2d,i * w + 1,canvasHeight/2,w - 1, -money[i]);
+            AlgoVisHelper.setStrokeWidth(g2d, 3);
+            AlgoVisHelper.setColor(g2d, AlgoVisHelper.Blue);
+            AlgoVisHelper.strokeCircle(g2d, circle.getX(),circle.getY(), circle.getR());
+            for (int i = 0; i < points.size(); i++) {
+                Point p = points.get(i);
+                if (circle.contain(p)){
+                    AlgoVisHelper.setColor(g2d,AlgoVisHelper.Red);
                 }
-
+                else{
+                    AlgoVisHelper.setColor(g2d,AlgoVisHelper.Green);
+                }
+                AlgoVisHelper.fillCircle(g2d, p.x, p.y, 3);
             }
         }
 
