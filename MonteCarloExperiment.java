@@ -42,9 +42,9 @@ public class MonteCarloExperiment {
 
     public static void main(String[] args) {
         int squareSize = 800;
-        int N = 1000000;
+        int N = 1000000000;
         MonteCarloExperiment exp = new MonteCarloExperiment(squareSize, N);
-        exp.setOutputInterval(10000);
+        exp.setOutputInterval(100000000);
         exp.run();
 
     }

@@ -6,19 +6,15 @@ import java.util.LinkedList;
 public class MonteCarloPiData {
     private Circle circle;
     private int insideCircle = 0;
-    private LinkedList<Point> points;
+    private Points points;
 
     public MonteCarloPiData(Circle circle) {
         this.circle = circle;
-        points = new LinkedList<Point>();
+        points = new Points();
     }
 
     public Circle getCircle() {
         return circle;
-    }
-
-    public Point getPoint(int i) {
-        return points.get(i);
     }
     public int getPointsNumber(){
         return points.size();
@@ -38,6 +34,20 @@ public class MonteCarloPiData {
         int circleArea = insideCircle;
         int squareArea = points.size();
         return (double)circleArea*4/squareArea;
+    }
+
+
+    class Points{
+        Points(){
+        }
+        private int count = 0;
+        public int size(){
+            return count;
+        }
+        public void add(Point p){
+            count++;
+        }
+
     }
 
 }
