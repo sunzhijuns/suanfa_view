@@ -45,6 +45,7 @@ public class AlgoVisualizer {
                     }
 
                     System.out.println("加入" + data.getPointsNumber() + "个点后，PI的估计值为:" + data.estimatePi());
+                    System.out.println("mean:" + data.meanPi());
                     long endTime = System.currentTimeMillis();
                     System.out.println("更新耗时 : " + (endTime-startTime) + "ms" );
                 }
