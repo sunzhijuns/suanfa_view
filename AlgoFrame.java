@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.LinkedList;
 
 public class AlgoFrame extends JFrame {
     private int canvasWidth;
@@ -52,16 +51,25 @@ public class AlgoFrame extends JFrame {
             g2d.addRenderingHints(hints);
 
             // 具体绘制
-            AlgoVisHelper.setColor(g2d, AlgoVisHelper.LightBlue);
             int w = canvasWidth / data.N();
             for (int i = 0; i < data.N(); i++) {
-                AlgoVisHelper.fillRectangle(g2d, i * w, canvasHeight - data.get(i), w-1, data.get(i));
+                if (i < data.orderedIndex) {
+                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.Red);
+                } else if (i == data.currentMinIndex) {
+                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.Indigo);
+                } else if (i == data.currentCompareIndex) {
+                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.LightBlue);
+                } else {
+                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.Grey);
+                }
+                AlgoVisHelper.fillRectangle(g2d, i * w, canvasHeight - data.get(i), w - 1, data.get(i));
             }
         }
-
         @Override
         public Dimension getPreferredSize() {
             return new Dimension(canvasWidth, canvasHeight);
         }
     }
+
+
 }

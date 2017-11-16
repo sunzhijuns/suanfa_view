@@ -23,19 +23,26 @@ public class AlgoVisualizer {
 //                long endTime = System.currentTimeMillis();
 ////                System.out.println("绘制耗时 : " + (endTime-startTime) + "ms" );
 //            }
-        frame.render(data);
-        AlgoVisHelper.pause(DELAY);
+        setData(0,-1,-1);
         for (int i = 0; i < data.N(); i++) {
             int minIndex = i;
+            setData(i,-1,i);
             for (int j = i + 1; j < data.N(); j++) {
+                setData(i,j,minIndex);
                 if (data.get(j) < data.get(minIndex)){
                     minIndex = j;
+                    setData(i,j,minIndex);
                 }
             }
             data.swap(i, minIndex);
-                frame.render(data);
-                AlgoVisHelper.pause(DELAY);
+            setData(i+1,-1,-1);
         }
+        setData(data.N(),-1,-1);
+    }
+    private void setData(int orderedIndex, int currentCompareIndex,int currentMinIndex){
+        data.orderedIndex = orderedIndex;
+        data.currentCompareIndex = currentCompareIndex;
+        data.currentMinIndex = currentMinIndex;
         frame.render(data);
         AlgoVisHelper.pause(DELAY);
     }
@@ -63,6 +70,7 @@ public class AlgoVisualizer {
         @Override
         public void mousePressed(MouseEvent e) {
             e.translatePoint(-9, -38);
+            isAnimated = !isAnimated;
             System.out.println(e.getPoint());
 
         }
