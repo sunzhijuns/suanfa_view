@@ -1,14 +1,17 @@
+
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 public class AlgoVisualizer {
-    private int DELAY = 200;
+    private int DELAY = 10;
     private long count = 0;
 
-    private InsertionSortData data;   // 数据
+    private MergeSortData data;   // 数据
     private AlgoFrame frame; //视图
     private int sceneWidth;
     private int sceneHeight;
@@ -24,44 +27,62 @@ public class AlgoVisualizer {
 //                long endTime = System.currentTimeMillis();
 ////                System.out.println("绘制耗时 : " + (endTime-startTime) + "ms" );
 //            }
-        setData(0, -1);
-        for (int i = 0; i < data.N(); i++) {
-            int e = data.get(i);
-            int j = i;
-            setData(i, i);
-            for (; j > 0 && data.get(j - 1) > e; j--) {
-                data.set(j, data.get(j - 1));
-                setData(i + 1, j-1);
-
-            }
-            data.set(j, e);
-            setData(i + 1, j);
-        }
-        setData(data.N(), -1);
+        setData(-1, -1, -1);
+        mergeSort(0, data.N() - 1);
+        setData(0,data.N()-1,data.N()-1);
     }
 
-    private void setData(int orderedIndex, int currentIndex) {
-        data.orderedIndex = orderedIndex;
-        data.currentIndex = currentIndex;
+    private void mergeSort(int l, int r){
+
+        if (l >= r){
+            return;
+        }
+        setData(l, r, -1);
+
+        int mid = l + (r - l)/2;
+        mergeSort(l, mid);
+        mergeSort(mid + 1, r);
+        merge(l, mid, r);
+    }
+    // [l, mid], [mid+1, r]
+    private void merge(int l, int mid, int r){
+        int[] aux = Arrays.copyOfRange(data.numbers, l, r + 1);
+        int i = l, j = mid + 1;
+        setData(l, r, -1);
+        for (int k = l; k < r + 1; k++) {
+
+            if (i > mid){ // 左边完了
+                data.numbers[k] = aux[j-l]; j++;
+            }else if (j > r){ // 右边完了
+                data.numbers[k] = aux[i-l]; i++;
+            }else if (aux[i-l] <= aux[j-l]){
+                data.numbers[k] = aux[i-l]; i++;
+            }else{
+                data.numbers[k] = aux[j-l]; j++;
+            }
+            setData(l, r, k);
+        }
+    }
+    private void setData(int l, int r, int mergeIndex) {
+        data.l = l;
+        data.r = r;
+        data.mergeIndex = mergeIndex;
         frame.render(data);
         AlgoVisHelper.pause(DELAY);
     }
-    public AlgoVisualizer(int sceneWidth, int sceneHeight, long N){
-        this(sceneWidth, sceneHeight, N, InsertionSortData.Type.Default);
-    }
 
-    public AlgoVisualizer(int sceneWidth, int sceneHeight, long N, InsertionSortData.Type dataType) {
+    public AlgoVisualizer(int sceneWidth, int sceneHeight, long N) {
         // 初始化数据
         this.N = N;
         this.sceneWidth = sceneWidth;
         this.sceneHeight = sceneHeight;
-        data = new InsertionSortData((int) N, sceneHeight, dataType);
+        data = new MergeSortData((int)N, sceneHeight);
     }
 
     public void start() {
         // 初始化视图
         EventQueue.invokeLater(() -> {
-            frame = new AlgoFrame("SelectionSort", sceneWidth, sceneHeight);
+            frame = new AlgoFrame("MergeSort", sceneWidth, sceneHeight);
             frame.addKeyListener(new AlgoKeyListener());
             new Thread(() -> {
                 run();

@@ -30,9 +30,9 @@ public class AlgoFrame extends JFrame {
     }
 
     // 自己的数据
-    private InsertionSortData data;
+    private MergeSortData data;
 
-    public void render(InsertionSortData data) {
+    public void render(MergeSortData data) {
         this.data = data;
         repaint();
     }
@@ -53,13 +53,13 @@ public class AlgoFrame extends JFrame {
             // 具体绘制
             int w = canvasWidth / data.N();
             for (int i = 0; i < data.N(); i++) {
-                if (i < data.orderedIndex) {
-                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.Red);
-                } else {
+                if (i >= data.l && i <= data.r){
+                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.Green);
+                }else{
                     AlgoVisHelper.setColor(g2d, AlgoVisHelper.Grey);
                 }
-                if (i == data.currentIndex) {
-                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.LightBlue);
+                if (i >= data.l && i <= data.mergeIndex){
+                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.Red);
                 }
                 AlgoVisHelper.fillRectangle(g2d, i * w, canvasHeight - data.get(i), w - 1, data.get(i));
             }
