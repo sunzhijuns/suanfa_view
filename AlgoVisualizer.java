@@ -5,7 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class AlgoVisualizer {
-    private int DELAY = 1000;
+    private int DELAY = 200;
     private long count = 0;
 
     private InsertionSortData data;   // 数据
@@ -26,11 +26,16 @@ public class AlgoVisualizer {
 //            }
         setData(0, -1);
         for (int i = 0; i < data.N(); i++) {
+            int e = data.get(i);
+            int j = i;
             setData(i, i);
-            for (int j = i; j > 0 && data.get(j) < data.get(j - 1); j--) {
-                data.swap(j, j - 1);
-                setData(i + 1, j - 1);
+            for (; j > 0 && data.get(j - 1) > e; j--) {
+                data.set(j, data.get(j - 1));
+                setData(i + 1, j-1);
+
             }
+            data.set(j, e);
+            setData(i + 1, j);
         }
         setData(data.N(), -1);
     }
@@ -41,13 +46,16 @@ public class AlgoVisualizer {
         frame.render(data);
         AlgoVisHelper.pause(DELAY);
     }
+    public AlgoVisualizer(int sceneWidth, int sceneHeight, long N){
+        this(sceneWidth, sceneHeight, N, InsertionSortData.Type.Default);
+    }
 
-    public AlgoVisualizer(int sceneWidth, int sceneHeight, long N) {
+    public AlgoVisualizer(int sceneWidth, int sceneHeight, long N, InsertionSortData.Type dataType) {
         // 初始化数据
         this.N = N;
         this.sceneWidth = sceneWidth;
         this.sceneHeight = sceneHeight;
-        data = new InsertionSortData((int) N, sceneHeight);
+        data = new InsertionSortData((int) N, sceneHeight, dataType);
     }
 
     public void start() {
