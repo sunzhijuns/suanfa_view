@@ -3,16 +3,12 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Arrays;
-import java.util.LinkedList;
 
 public class AlgoVisualizer {
-    private int DELAY = 40;
+    private int DELAY = 2000;
     private long count = 0;
 
-    private Circle circle;
-    private int insideCircle = 0;
-    private LinkedList<Point> points;     // 数据
+    private SelectionSortData data;   // 数据
     private AlgoFrame frame; //视图
     private int sceneWidth;
     private int sceneHeight;
@@ -21,68 +17,41 @@ public class AlgoVisualizer {
     private boolean isAnimated = true;
     //  动画逻辑
     private void run() {
-        while (true) {
             // 绘制数据
-
-            if (!isAnimated){
-                long startTime = System.currentTimeMillis();
-                frame.render(circle, points);
-                long endTime = System.currentTimeMillis();
-//                System.out.println("绘制耗时 : " + (endTime-startTime) + "ms" );
-            }
-            AlgoVisHelper.pause(DELAY);
-
-
-
-            if (isAnimated){
-
-                if (points.size() < N){
-                    long startTime = System.currentTimeMillis();
-                    for (int i = 0; i < 100; i++) {
-                        int x = (int)(Math.random() * frame.getCanvasWidth());
-                        int y = (int)(Math.random() * frame.getCanvasHeight());
-                        Point p = new Point(x, y);
-                        points.add(p);
-                        if (circle.contain(p)){
-                            insideCircle++;
-                        }
-                    }
-                    if (points.size() != 0){
-                        int circleArea = insideCircle;
-                        int squareArea = points.size();
-                        double piEstimation = 4 * (double)circleArea/squareArea;
-                        System.out.println("加入" + points.size() + "个点后，PI的估计值为:" + piEstimation);
-                    }
-                    long endTime = System.currentTimeMillis();
-                    System.out.println("更新耗时 : " + (endTime-startTime) + "ms" );
+//            if (!isAnimated) {
+//                long startTime = System.currentTimeMillis();
+//                long endTime = System.currentTimeMillis();
+////                System.out.println("绘制耗时 : " + (endTime-startTime) + "ms" );
+//            }
+        frame.render(data);
+        AlgoVisHelper.pause(DELAY);
+        for (int i = 0; i < data.N(); i++) {
+            int minIndex = i;
+            for (int j = i + 1; j < data.N(); j++) {
+                if (data.get(j) < data.get(minIndex)){
+                    minIndex = j;
                 }
-
-
             }
-
-
+            data.swap(i, minIndex);
+                frame.render(data);
+                AlgoVisHelper.pause(DELAY);
         }
+        frame.render(data);
+        AlgoVisHelper.pause(DELAY);
     }
 
     public AlgoVisualizer(int sceneWidth, int sceneHeight, long N) {
-        if (sceneWidth != sceneHeight){
-            throw new IllegalArgumentException("this demo must be run in a squre window");
-        }
         // 初始化数据
         this.N= N;
         this.sceneWidth = sceneWidth;
         this.sceneHeight = sceneHeight;
-        circle = new Circle(sceneWidth/2, sceneHeight/2, sceneHeight/2);
-        points = new LinkedList<Point>();
-
-
-
+        data = new SelectionSortData((int)N, sceneHeight);
     }
 
     public void start() {
         // 初始化视图
         EventQueue.invokeLater(() -> {
-            frame = new AlgoFrame("Get PI", sceneWidth, sceneHeight);
+            frame = new AlgoFrame("SelectionSort", sceneWidth, sceneHeight);
             frame.addKeyListener(new AlgoKeyListener());
             new Thread(() -> {
                 run();

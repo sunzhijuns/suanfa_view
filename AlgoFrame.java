@@ -29,13 +29,12 @@ public class AlgoFrame extends JFrame {
     public int getCanvasHeight() {
         return canvasHeight;
     }
-    // 自己的数据
-    private Circle circle;
-    private LinkedList<Point> points;
 
-    public void render(Circle circle, LinkedList<Point> points) {
-        this.circle = circle;
-        this.points = points;
+    // 自己的数据
+    private SelectionSortData data;
+
+    public void render(SelectionSortData data) {
+        this.data = data;
         repaint();
     }
 
@@ -53,18 +52,10 @@ public class AlgoFrame extends JFrame {
             g2d.addRenderingHints(hints);
 
             // 具体绘制
-            AlgoVisHelper.setStrokeWidth(g2d, 3);
-            AlgoVisHelper.setColor(g2d, AlgoVisHelper.Blue);
-            AlgoVisHelper.strokeCircle(g2d, circle.getX(),circle.getY(), circle.getR());
-            for (int i = 0; i < points.size(); i++) {
-                Point p = points.get(i);
-                if (circle.contain(p)){
-                    AlgoVisHelper.setColor(g2d,AlgoVisHelper.Red);
-                }
-                else{
-                    AlgoVisHelper.setColor(g2d,AlgoVisHelper.Green);
-                }
-                AlgoVisHelper.fillCircle(g2d, p.x, p.y, 3);
+            AlgoVisHelper.setColor(g2d, AlgoVisHelper.LightBlue);
+            int w = canvasWidth / data.N();
+            for (int i = 0; i < data.N(); i++) {
+                AlgoVisHelper.fillRectangle(g2d, i * w, canvasHeight - data.get(i), w-1, data.get(i));
             }
         }
 
