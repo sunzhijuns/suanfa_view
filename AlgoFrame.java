@@ -30,9 +30,9 @@ public class AlgoFrame extends JFrame {
     }
 
     // 自己的数据
-    private SelectionSortData data;
+    private InsertionSortData data;
 
-    public void render(SelectionSortData data) {
+    public void render(InsertionSortData data) {
         this.data = data;
         repaint();
     }
@@ -55,16 +55,16 @@ public class AlgoFrame extends JFrame {
             for (int i = 0; i < data.N(); i++) {
                 if (i < data.orderedIndex) {
                     AlgoVisHelper.setColor(g2d, AlgoVisHelper.Red);
-                } else if (i == data.currentMinIndex) {
-                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.Indigo);
-                } else if (i == data.currentCompareIndex) {
-                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.LightBlue);
                 } else {
                     AlgoVisHelper.setColor(g2d, AlgoVisHelper.Grey);
+                }
+                if (i == data.currentIndex) {
+                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.LightBlue);
                 }
                 AlgoVisHelper.fillRectangle(g2d, i * w, canvasHeight - data.get(i), w - 1, data.get(i));
             }
         }
+
         @Override
         public Dimension getPreferredSize() {
             return new Dimension(canvasWidth, canvasHeight);
