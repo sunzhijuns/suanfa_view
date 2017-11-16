@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 
 public class AlgoVisualizer {
-    private int DELAY = 10;
+    private int DELAY = 40;
     private long count = 0;
 
     private MergeSortData data;   // 数据
@@ -28,7 +28,13 @@ public class AlgoVisualizer {
 ////                System.out.println("绘制耗时 : " + (endTime-startTime) + "ms" );
 //            }
         setData(-1, -1, -1);
-        mergeSort(0, data.N() - 1);
+//        mergeSort(0, data.N() - 1);
+        for (int sz = 1; sz < data.N(); sz *= 2) {
+            for (int i = 0; i < data.N() - sz; i+= sz + sz) {
+                // [i, i+sz-1], [i+sz, i+sz + sz -1]
+                merge(i, i + sz - 1, Math.min(i + sz + sz-1 , data.N() - 1));
+            }
+        }
         setData(0,data.N()-1,data.N()-1);
     }
 
