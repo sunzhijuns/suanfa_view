@@ -1,20 +1,24 @@
 import java.util.Arrays;
 
-public class InsertionSortData {
+public class QuickSortData {
     private int[] numbers;
-    public int orderedIndex = -1;// [0 ... orderedIndex) 有序区间
-    public int currentIndex = -1;// 正在处理的元素
+    public int l, r;
+    public int curPivot;
+    public int curElement;
+    public boolean[] fixedPivot;
 
     public enum Type{
         Default,
         NearlyOrdered
     }
 
-    public InsertionSortData(int N, int randomBound, Type dataType) {
+    public QuickSortData(int N, int randomBound, Type dataType) {
         numbers = new int[N];
+        fixedPivot = new boolean[N];
         for (int i = 0; i < N; i++) {
-            numbers[i] = (int)(Math.random() * randomBound) + 1;
-//            numbers[i] = (int)((double)(i + 1)/N * randomBound);
+            fixedPivot[i] = false;
+//            numbers[i] = (int)(Math.random() * randomBound) + 1;
+            numbers[i] = (int)((double)(i + 1)/N * randomBound);
 //            numbers[i] = (int)((double)(N - i)/N * randomBound);
         }
         if (dataType == Type.NearlyOrdered){
@@ -27,7 +31,7 @@ public class InsertionSortData {
             }
         }
     }
-    public InsertionSortData(int N, int randomBound){
+    public QuickSortData(int N, int randomBound){
         this(N, randomBound, Type.Default);
     }
 

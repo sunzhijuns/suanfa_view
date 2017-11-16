@@ -5,10 +5,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class AlgoVisualizer {
-    private int DELAY = 200;
+    private int DELAY = 5;
     private long count = 0;
 
-    private InsertionSortData data;   // 数据
+    private QuickSortData data;   // 数据
     private AlgoFrame frame; //视图
     private int sceneWidth;
     private int sceneHeight;
@@ -24,38 +24,61 @@ public class AlgoVisualizer {
 //                long endTime = System.currentTimeMillis();
 ////                System.out.println("绘制耗时 : " + (endTime-startTime) + "ms" );
 //            }
-        setData(0, -1);
-        for (int i = 0; i < data.N(); i++) {
-            int e = data.get(i);
-            int j = i;
-            setData(i, i);
-            for (; j > 0 && data.get(j - 1) > e; j--) {
-                data.set(j, data.get(j - 1));
-                setData(i + 1, j-1);
-
-            }
-            data.set(j, e);
-            setData(i + 1, j);
+        setData(-1,-1,-1,-1,-1);
+        quickSort(0, data.N() - 1);
+        setData(-1,-1,-1,-1,-1);
+    }
+    private void quickSort(int l, int r){
+        if (l > r){
+            return;
         }
-        setData(data.N(), -1);
+        if (l==r){
+            setData(l,r,l,-1,-1);
+            return;
+        }
+        setData(l,r,-1,-1,-1);
+        int q = partition(l, r);
+        quickSort(l, q - 1);
+        quickSort(q + 1, r);
+    }
+    private int partition(int l, int r){
+        int e = data.get(l);
+        int j = l;
+        setData(l,r,-1,l,-1);
+        for (int i = l+1; i < r+1; i++) {
+            setData(l,r,-1,l,i);
+            if (e > data.get(i)){
+                j++;
+                data.swap(i,j);
+                setData(l,r,-1,l,i);
+            }
+        }
+        data.swap(l, j);
+        setData(l, r, j, -1,-1);
+        return j;
     }
 
-    private void setData(int orderedIndex, int currentIndex) {
-        data.orderedIndex = orderedIndex;
-        data.currentIndex = currentIndex;
+    private void setData(int l, int r, int fixedPivot, int curPivot, int curElement) {
+        data.l = l;
+        data.r = r;
+        if (fixedPivot >= 0){
+            data.fixedPivot[fixedPivot] = true;
+        }
+        data.curPivot = curPivot;
+        data.curElement = curElement;
         frame.render(data);
         AlgoVisHelper.pause(DELAY);
     }
     public AlgoVisualizer(int sceneWidth, int sceneHeight, long N){
-        this(sceneWidth, sceneHeight, N, InsertionSortData.Type.Default);
+        this(sceneWidth, sceneHeight, N, QuickSortData.Type.Default);
     }
 
-    public AlgoVisualizer(int sceneWidth, int sceneHeight, long N, InsertionSortData.Type dataType) {
+    public AlgoVisualizer(int sceneWidth, int sceneHeight, long N, QuickSortData.Type dataType) {
         // 初始化数据
         this.N = N;
         this.sceneWidth = sceneWidth;
         this.sceneHeight = sceneHeight;
-        data = new InsertionSortData((int) N, sceneHeight, dataType);
+        data = new QuickSortData((int) N, sceneHeight, dataType);
     }
 
     public void start() {
