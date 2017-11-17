@@ -4,21 +4,28 @@ public class QuickSortData {
     private int[] numbers;
     public int l, r;
     public int curPivot;
-    public int curElement;
+    public int curL, curR;
     public boolean[] fixedPivot;
 
     public enum Type{
         Default,
-        NearlyOrdered
+        NearlyOrdered,
+        Identical
     }
 
     public QuickSortData(int N, int randomBound, Type dataType) {
         numbers = new int[N];
         fixedPivot = new boolean[N];
+        int lBound = 1;
+        int rBound = randomBound;
+        if (dataType == Type.Identical){
+            lBound = randomBound / 2;
+            rBound = randomBound / 2;
+        }
         for (int i = 0; i < N; i++) {
             fixedPivot[i] = false;
-//            numbers[i] = (int)(Math.random() * randomBound) + 1;
-            numbers[i] = (int)((double)(i + 1)/N * randomBound);
+            numbers[i] = (int)(Math.random() * (rBound - lBound + 1)) + lBound;
+//            numbers[i] = (int)((double)(i + 1)/N * randomBound);
 //            numbers[i] = (int)((double)(N - i)/N * randomBound);
         }
         if (dataType == Type.NearlyOrdered){
