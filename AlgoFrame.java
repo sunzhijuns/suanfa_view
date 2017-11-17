@@ -30,9 +30,9 @@ public class AlgoFrame extends JFrame {
     }
 
     // 自己的数据
-    private HeapSortData data;
+    private MazeData data;
 
-    public void render(HeapSortData data) {
+    public void render(MazeData data) {
         this.data = data;
         repaint();
     }
@@ -51,18 +51,19 @@ public class AlgoFrame extends JFrame {
             g2d.addRenderingHints(hints);
 
             // 具体绘制
-            int w = canvasWidth / data.N();
+            int w = canvasWidth / data.M();
+            int h = canvasHeight / data.N();
             for (int i = 0; i < data.N(); i++) {
-                if (i >= data.heapIndex) {
-                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.Red);
-                } else {
-                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.Grey);
-                }
-                if (i == data.curIndex){
-                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.Blue);
+                for (int j = 0; j < data.M(); j++) {
+                    if (data.getMaze(i,j) == MazeData.WALL) {
+                        AlgoVisHelper.setColor(g2d, AlgoVisHelper.LightBlue);
+                    } else {
+                        AlgoVisHelper.setColor(g2d, AlgoVisHelper.White);
+                    }
+                    AlgoVisHelper.fillRectangle(g2d, j * w, i * h, w, h);
                 }
 
-                AlgoVisHelper.fillRectangle(g2d, i * w, canvasHeight - data.get(i), w - 1, data.get(i));
+
             }
         }
 

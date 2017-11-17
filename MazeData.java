@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class MazeData {
+    public static final char ROAD = ' ';
+    public static final char WALL = '#';
+
     private int N, M;// N行M列
     private char[][] maze;
     public MazeData(String filename) {
