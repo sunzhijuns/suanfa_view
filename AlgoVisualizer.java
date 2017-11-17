@@ -38,53 +38,50 @@ public class AlgoVisualizer {
         }
         setData(l,r,-1,-1,-1,data.N());
 
-        int q = partition(l, r);
-        quickSort(l, q - 1);
-        quickSort(q + 1, r);
+        int[] q = partition(l, r);
+        quickSort(l, q[0]);
+        quickSort(q[1], r);
     }
-    private int partition(int l, int r){
+    private int[] partition(int l, int r){
         int p = (int) (Math.random() * (r-l+1) )+ l;
-        setData(l,r,-1,p,-1,data.N());
         data.swap(l,p);
-
-        setData(l,r,-1,l,-1,data.N());
 
         int e = data.get(l);
 
-        int i = l+1, j = r;
-        setData(l,r,-1,l,i,j);
-        while(true){
-            while(i <= r && data.get(i) < e){
+        int i = l+1; //待比较 [lt + 1, i - 1] ==
+        int gt = r + 1; // [gt, r] >
+        int lt = l; // [l+1, lt] <
 
-                i ++;// 可能r+1
-                setData(l,r,-1,l,i,j);
-            }
-            while(j >= l + 1 && data.get(j) > e){
 
-                j --;// 可能l
-                setData(l,r,-1,l,i,j);
+        while(i < gt){
+            if (data.get(i) == e){
+                i++;
+            }else if (data.get(i) > e){
+                gt--;
+                data.swap(i,gt);
+            }else{// if (data.get(i) < e)
+                data.swap(i, lt+1);
+                lt++;
+                i++;
             }
-            if (i >= j){
-                break;
-            }
-            setData(l,r,-1,l,i,j);
-            data.swap(i,j);
-
-            i++;
-            j--;
-            setData(l,r,-1,l,i,j);
         }
-        data.swap(l, j);
-        setData(l,r,j,-1,-1,data.N());
+        data.swap(l,lt);
+        setData(l,r,lt,-1,-1,data.N());
 
-        return j;
+
+        return new int[]{lt-1,gt};
     }
 
     private void setData(int l, int r, int fixedPivot, int curPivot, int curL, int curR) {
         data.l = l;
         data.r = r;
         if (fixedPivot >= 0){
-            data.fixedPivot[fixedPivot] = true;
+            for (int i = fixedPivot; i < data.N(); i++) {
+                if (data.get(fixedPivot) == data.get(i)){
+                    data.fixedPivot[i] = true;
+                }
+
+            }
         }
         data.curPivot = curPivot;
         data.curL = curL;
