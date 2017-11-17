@@ -19,8 +19,8 @@ public class QuickSortData {
         int lBound = 1;
         int rBound = randomBound;
         if (dataType == Type.Identical){
-            lBound = randomBound / 2;
-            rBound = randomBound / 2;
+            lBound = randomBound / 2 -4;//0;
+            rBound = randomBound / 2 + 4;//0;
         }
         for (int i = 0; i < N; i++) {
             fixedPivot[i] = false;

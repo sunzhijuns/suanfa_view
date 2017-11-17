@@ -44,7 +44,9 @@ public class AlgoVisualizer {
     }
     private int[] partition(int l, int r){
         int p = (int) (Math.random() * (r-l+1) )+ l;
+        setData(l,r,-1,p,-1,data.N());
         data.swap(l,p);
+        setData(l,r,-1,l,-1,data.N());
 
         int e = data.get(l);
 
@@ -52,6 +54,7 @@ public class AlgoVisualizer {
         int gt = r + 1; // [gt, r] >
         int lt = l; // [l+1, lt] <
 
+        setData(l,r,-1,l,lt,gt);
 
         while(i < gt){
             if (data.get(i) == e){
@@ -64,6 +67,8 @@ public class AlgoVisualizer {
                 lt++;
                 i++;
             }
+            setData(l,r,-1,l,lt,gt);
+//            setData(l,r,-1,l,i,gt);
         }
         data.swap(l,lt);
         setData(l,r,lt,-1,-1,data.N());
@@ -76,10 +81,8 @@ public class AlgoVisualizer {
         data.l = l;
         data.r = r;
         if (fixedPivot >= 0){
-            for (int i = fixedPivot; i < data.N(); i++) {
-                if (data.get(fixedPivot) == data.get(i)){
-                    data.fixedPivot[i] = true;
-                }
+            for (int i = fixedPivot; i < data.N() && data.get(fixedPivot) == data.get(i); i++) {
+                data.fixedPivot[i] = true;
 
             }
         }
