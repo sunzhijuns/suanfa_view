@@ -5,7 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class AlgoVisualizer {
-    private int DELAY = 1000;
+    private int DELAY = 100;
     private long count = 0;
 
     private HeapSortData data;   // 数据
@@ -47,6 +47,8 @@ public class AlgoVisualizer {
                     setData(n,j);
                 }
             }
+
+            // > 还是 >=, 左边> 右边>=, >= 更好
             if (data.get(i) >= data.get(j)){
                 setData(n,i);
                 break;
