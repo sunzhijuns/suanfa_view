@@ -5,10 +5,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class AlgoVisualizer {
-    private int DELAY = 200;
+    private int DELAY = 1000;
     private long count = 0;
 
-    private QuickSortData data;   // 数据
+    private HeapSortData data;   // 数据
     private AlgoFrame frame; //视图
     private int sceneWidth;
     private int sceneHeight;
@@ -24,84 +24,58 @@ public class AlgoVisualizer {
 //                long endTime = System.currentTimeMillis();
 ////                System.out.println("绘制耗时 : " + (endTime-startTime) + "ms" );
 //            }
-        setData(-1,-1,-1,-1,-1, data.N());
-        quickSort(0, data.N() - 1);
-        setData(-1,-1,-1,-1,-1,data.N());
-    }
-    private void quickSort(int l, int r){
-        if (l > r){
-            return;
+        setData(data.N(), -1);
+        for (int i = (data.N() - 1 - 1) / 2; i >= 0; i--) {
+            shiftDown(data.N(), i);
         }
-        if (l==r){
-            setData(l,r,l,-1,-1,data.N());
-            return;
+        for (int i =  data.N() - 1; i >0; i--) {
+            data.swap(0, i);
+            shiftDown(i, 0);
+            setData(i,-1);
+
         }
-        setData(l,r,-1,-1,-1,data.N());
-
-        int[] q = partition(l, r);
-        quickSort(l, q[0]);
-        quickSort(q[1], r);
+        setData(0,-1);
     }
-    private int[] partition(int l, int r){
-        int p = (int) (Math.random() * (r-l+1) )+ l;
-        setData(l,r,-1,p,-1,data.N());
-        data.swap(l,p);
-        setData(l,r,-1,l,-1,data.N());
-
-        int e = data.get(l);
-
-        int i = l+1; //待比较 [lt + 1, i - 1] ==
-        int gt = r + 1; // [gt, r] >
-        int lt = l; // [l+1, lt] <
-
-        setData(l,r,-1,l,lt,gt);
-
-        while(i < gt){
-            if (data.get(i) == e){
-                i++;
-            }else if (data.get(i) > e){
-                gt--;
-                data.swap(i,gt);
-            }else{// if (data.get(i) < e)
-                data.swap(i, lt+1);
-                lt++;
-                i++;
+    private void shiftDown(int n, int i){
+        setData(n,i);
+        while(2*i + 1 < n){
+            int j = 2*i+1;
+            setData(n,j);
+            if (2*i+2 < n){
+                if (data.get(2*i+2) >= data.get(2*i + 1)){
+                    j = 2*i+2;
+                    setData(n,j);
+                }
             }
-            setData(l,r,-1,l,lt,gt);
-//            setData(l,r,-1,l,i,gt);
-        }
-        data.swap(l,lt);
-        setData(l,r,lt,-1,-1,data.N());
-
-
-        return new int[]{lt-1,gt};
-    }
-
-    private void setData(int l, int r, int fixedPivot, int curPivot, int curL, int curR) {
-        data.l = l;
-        data.r = r;
-        if (fixedPivot >= 0){
-            for (int i = fixedPivot; i < data.N() && data.get(fixedPivot) == data.get(i); i++) {
-                data.fixedPivot[i] = true;
-
+            if (data.get(i) >= data.get(j)){
+                setData(n,i);
+                break;
             }
+            setData(n,i);
+            data.swap(i,j);
+            setData(n,i);
+            i = j;
+
         }
-        data.curPivot = curPivot;
-        data.curL = curL;
-        data.curR = curR;
+
+
+    }
+    private void setData(int heapIndex, int curIndex) {
+        data.heapIndex = heapIndex;
+        data.curIndex = curIndex;
         frame.render(data);
         AlgoVisHelper.pause(DELAY);
     }
     public AlgoVisualizer(int sceneWidth, int sceneHeight, long N){
-        this(sceneWidth, sceneHeight, N, QuickSortData.Type.Default);
+        this(sceneWidth, sceneHeight, N, HeapSortData.Type.Default);
     }
 
-    public AlgoVisualizer(int sceneWidth, int sceneHeight, long N, QuickSortData.Type dataType) {
+    public AlgoVisualizer(int sceneWidth, int sceneHeight, long N, HeapSortData.Type dataType) {
         // 初始化数据
         this.N = N;
         this.sceneWidth = sceneWidth;
         this.sceneHeight = sceneHeight;
-        data = new QuickSortData((int) N, sceneHeight, dataType);
+        data = new HeapSortData((int) N, sceneHeight, dataType);
     }
 
     public void start() {

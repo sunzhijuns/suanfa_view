@@ -1,11 +1,13 @@
 import java.util.Arrays;
 
-public class QuickSortData {
+public class HeapSortData {
     private int[] numbers;
     public int l, r;
     public int curPivot;
     public int curL, curR;
     public boolean[] fixedPivot;
+    public int heapIndex;
+    public int curIndex;
 
     public enum Type{
         Default,
@@ -13,14 +15,14 @@ public class QuickSortData {
         Identical
     }
 
-    public QuickSortData(int N, int randomBound, Type dataType) {
+    public HeapSortData(int N, int randomBound, Type dataType) {
         numbers = new int[N];
         fixedPivot = new boolean[N];
         int lBound = 1;
         int rBound = randomBound;
         if (dataType == Type.Identical){
-            lBound = randomBound / 2 -4;//0;
-            rBound = randomBound / 2 + 4;//0;
+            lBound = randomBound / 2;// -4;//0;
+            rBound = randomBound / 2;// + 4;//0;
         }
         for (int i = 0; i < N; i++) {
             fixedPivot[i] = false;
@@ -38,7 +40,7 @@ public class QuickSortData {
             }
         }
     }
-    public QuickSortData(int N, int randomBound){
+    public HeapSortData(int N, int randomBound){
         this(N, randomBound, Type.Default);
     }
 
