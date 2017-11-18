@@ -5,7 +5,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class AlgoVisualizer {
-    private int DELAY = 100;
+    private static final int[][] d = new int[][]{{-1,0},{0,1},{1,0},{0,-1}};
+
+    private int DELAY = 1;
 
     private MazeData data;   // 数据
     private AlgoFrame frame; //视图
@@ -22,11 +24,43 @@ public class AlgoVisualizer {
 //                long endTime = System.currentTimeMillis();
 ////                System.out.println("绘制耗时 : " + (endTime-startTime) + "ms" );
 
-        setData();
+        setData(-1,-1,false);
+        if (!go(data.getEntranceX(), data.getEntranceY())){
+            System.out.println("No");
+        }
+        setData(-1,-1,false);
+
+    }
+    private boolean go(int x, int y){
+        setData(x,y,true);
+//        System.out.println(x + ";" + y);
+        data.visited[x][y] = true;
+        if (x == data.getExitX() && y == data.getExitY()){
+            System.out.println("ok");
+            return true;
+        }
+        for (int i = 0; i < 4; i++) {
+            int newX = x+d[i][0];
+            int newY = y+d[i][1];
+            if (data.inArea(newX, newY) &&
+                    data.getMaze(newX, newY) == MazeData.ROAD &&
+                    !data.visited[newX][newY]){
+                if(go(newX, newY)){
+                    return true;
+                }
+
+            }
+        }
+
+        setData(x,y,false);
+        return false;
 
     }
 
-    private void setData() {
+    private void setData(int x, int y, boolean isPath) {
+        if (data.inArea(x,y)){
+            data.path[x][y] = isPath;
+        }
         frame.render(data);
         AlgoVisHelper.pause(DELAY);
 
