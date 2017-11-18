@@ -1,11 +1,12 @@
-import javafx.geometry.Pos;
+
 
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Stack;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class AlgoVisualizer {
     private static final int[][] d = new int[][]{{-1,0},{0,1},{1,0},{0,-1}};
@@ -28,11 +29,13 @@ public class AlgoVisualizer {
 ////                System.out.println("绘制耗时 : " + (endTime-startTime) + "ms" );
 
         setData(-1,-1,false);
-        Stack<Position> stack = new Stack<Position>();
-        stack.push(new Position(data.getEntranceX(), data.getEntranceY(), null));
+        ConcurrentLinkedQueue<Position> queue = new ConcurrentLinkedQueue<Position>();
+        queue.add(new Position(data.getEntranceX(), data.getEntranceY(), null));
         data.visited[data.getEntranceX()][data.getEntranceY()] = true;
-        while (!stack.empty()){
-            Position pos = stack.pop();
+
+        while (!queue.isEmpty())
+        {
+            Position pos = queue.poll();
 
             setData(pos.getX(), pos.getY() ,true);
             if (pos.getX() == data.getExitX() && pos.getY() == data.getExitY()){
@@ -46,7 +49,7 @@ public class AlgoVisualizer {
                 if (data.inArea(newX, newY) &&
                         !data.visited[newX][newY] &&
                         data.getMaze(newX, newY) == MazeData.ROAD){
-                    stack.push(new Position(newX,newY, pos));
+                    queue.add(new Position(newX,newY, pos));
                     data.visited[newX][newY] = true;
 
                 }
@@ -61,7 +64,6 @@ public class AlgoVisualizer {
         while (cur.getPre() != null){
             cur = cur.getPre();
             data.result[cur.getX()][cur.getY()] = true;
-
         }
 
     }
