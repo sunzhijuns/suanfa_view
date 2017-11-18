@@ -1,8 +1,11 @@
+import javafx.geometry.Pos;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Stack;
 
 public class AlgoVisualizer {
     private static final int[][] d = new int[][]{{-1,0},{0,1},{1,0},{0,-1}};
@@ -25,42 +28,48 @@ public class AlgoVisualizer {
 ////                System.out.println("绘制耗时 : " + (endTime-startTime) + "ms" );
 
         setData(-1,-1,false);
-        if (!go(data.getEntranceX(), data.getEntranceY())){
-            System.out.println("No");
+        Stack<Position> stack = new Stack<Position>();
+        stack.push(new Position(data.getEntranceX(), data.getEntranceY(), null));
+        data.visited[data.getEntranceX()][data.getEntranceY()] = true;
+        while (!stack.empty()){
+            Position pos = stack.pop();
+
+            setData(pos.getX(), pos.getY() ,true);
+            if (pos.getX() == data.getExitX() && pos.getY() == data.getExitY()){
+                System.out.println("ok");
+                findPath(pos);
+                break;
+            }
+            for (int i = 0; i < 4; i++) {
+                int newX = pos.getX() + d[i][0];
+                int newY = pos.getY() + d[i][1];
+                if (data.inArea(newX, newY) &&
+                        !data.visited[newX][newY] &&
+                        data.getMaze(newX, newY) == MazeData.ROAD){
+                    stack.push(new Position(newX,newY, pos));
+                    data.visited[newX][newY] = true;
+
+                }
+            }
+
         }
         setData(-1,-1,false);
 
     }
-    private boolean go(int x, int y){
-        setData(x,y,true);
-//        System.out.println(x + ";" + y);
-        data.visited[x][y] = true;
-        if (x == data.getExitX() && y == data.getExitY()){
-            System.out.println("ok");
-            return true;
-        }
-        for (int i = 0; i < 4; i++) {
-            int newX = x+d[i][0];
-            int newY = y+d[i][1];
-            if (data.inArea(newX, newY) &&
-                    data.getMaze(newX, newY) == MazeData.ROAD &&
-                    !data.visited[newX][newY]){
-                if(go(newX, newY)){
-                    return true;
-                }
+    private void findPath(Position cur){
+        data.result[cur.getX()][cur.getY()] = true;
+        while (cur.getPre() != null){
+            cur = cur.getPre();
+            data.result[cur.getX()][cur.getY()] = true;
 
-            }
         }
-
-        setData(x,y,false);
-        return false;
 
     }
-
     private void setData(int x, int y, boolean isPath) {
         if (data.inArea(x,y)){
             data.path[x][y] = isPath;
         }
+
         frame.render(data);
         AlgoVisHelper.pause(DELAY);
 
