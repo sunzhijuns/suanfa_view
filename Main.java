@@ -1,10 +1,11 @@
 public class Main {
     public static void main(String[] args) {
-        int sceneWidth = 909;
-        int sceneHeight = 909;
+        int N = 101;
+        int M = 101;
         String mazeFile = "maze_101_101.txt";
-        AlgoVisualizer vis = new AlgoVisualizer(sceneWidth,sceneHeight,mazeFile);
+        AlgoVisualizer vis = new AlgoVisualizer(N,M);
         vis.start();
+
 
     }
 }

@@ -55,16 +55,10 @@ public class AlgoFrame extends JFrame {
             int h = canvasHeight / data.N();
             for (int i = 0; i < data.N(); i++) {
                 for (int j = 0; j < data.M(); j++) {
-                    if (data.getMaze(i,j) == MazeData.WALL) {
+                    if (data.maze[i][j] == MazeData.WALL) {
                         AlgoVisHelper.setColor(g2d, AlgoVisHelper.LightBlue);
                     } else {
                         AlgoVisHelper.setColor(g2d, AlgoVisHelper.White);
-                    }
-                    if (data.path[i][j]){
-                        AlgoVisHelper.setColor(g2d, AlgoVisHelper.Yellow);
-                    }
-                    if (data.result[i][j]){
-                        AlgoVisHelper.setColor(g2d, AlgoVisHelper.Red);
                     }
                     AlgoVisHelper.fillRectangle(g2d, j * w, i * h, w, h);
                 }

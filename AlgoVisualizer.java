@@ -11,7 +11,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class AlgoVisualizer {
     private static final int[][] d = new int[][]{{-1,0},{0,1},{1,0},{0,-1}};
 
-    private int DELAY = 1;
+    private int DELAY = 10;
+    private int blockSize = 8;
 
     private MazeData data;   // 数据
     private AlgoFrame frame; //视图
@@ -28,60 +29,23 @@ public class AlgoVisualizer {
 //                long endTime = System.currentTimeMillis();
 ////                System.out.println("绘制耗时 : " + (endTime-startTime) + "ms" );
 
-        setData(-1,-1,false);
-        ConcurrentLinkedQueue<Position> queue = new ConcurrentLinkedQueue<Position>();
-        queue.add(new Position(data.getEntranceX(), data.getEntranceY(), null));
-        data.visited[data.getEntranceX()][data.getEntranceY()] = true;
 
-        while (!queue.isEmpty())
-        {
-            Position pos = queue.poll();
 
-            setData(pos.getX(), pos.getY() ,true);
-            if (pos.getX() == data.getExitX() && pos.getY() == data.getExitY()){
-                System.out.println("ok");
-                findPath(pos);
-                break;
-            }
-            for (int i = 0; i < 4; i++) {
-                int newX = pos.getX() + d[i][0];
-                int newY = pos.getY() + d[i][1];
-                if (data.inArea(newX, newY) &&
-                        !data.visited[newX][newY] &&
-                        data.getMaze(newX, newY) == MazeData.ROAD){
-                    queue.add(new Position(newX,newY, pos));
-                    data.visited[newX][newY] = true;
-
-                }
-            }
-
-        }
-        setData(-1,-1,false);
+        setData();
 
     }
-    private void findPath(Position cur){
-        data.result[cur.getX()][cur.getY()] = true;
-        while (cur.getPre() != null){
-            cur = cur.getPre();
-            data.result[cur.getX()][cur.getY()] = true;
-        }
 
-    }
-    private void setData(int x, int y, boolean isPath) {
-        if (data.inArea(x,y)){
-            data.path[x][y] = isPath;
-        }
-
+    private void setData() {
         frame.render(data);
         AlgoVisHelper.pause(DELAY);
 
     }
 
-    public AlgoVisualizer(int sceneWidth, int sceneHeight, String mazeFile) {
+    public AlgoVisualizer(int N, int M) {
         // 初始化数据
-        this.sceneWidth = sceneWidth;
-        this.sceneHeight = sceneHeight;
-        data = new MazeData(mazeFile);
+        this.sceneWidth = blockSize * M;
+        this.sceneHeight = blockSize * N;
+        data = new MazeData(N, M);
     }
 
     public void start() {

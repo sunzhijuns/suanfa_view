@@ -9,7 +9,7 @@ public class MazeData {
     public static final char WALL = '#';
 
     private int N, M;// N行M列
-    private char[][] maze;
+    public char[][] maze;
     private int entranceX, entranceY;
     private int exitX, exitY;
 
@@ -17,54 +17,30 @@ public class MazeData {
     public boolean[][] path;
     public boolean[][] result;
 
-    public MazeData(String filename) {
-        if (filename == null) {
-            throw new IllegalArgumentException("Filename can not be null!");
+    public MazeData(int N, int M) {
+        if (N % 2 == 0 || M % 2 == 0) {
+            throw new IllegalArgumentException("Our Maze Generalization Algorithm requires the width and height of the maze are odd numbers!");
         }
-        Scanner scanner = null;
-        try {
-            File file = new File(filename);
-            if (!file.exists()) {
-                throw new IllegalArgumentException("File " + filename + " doesn't exist");
-            }
-            FileInputStream fis = new FileInputStream(file);
-            scanner = new Scanner(new BufferedInputStream(fis), "UTF-8");
-            //
-            String nmline = scanner.nextLine();
-            String[] nm = nmline.trim().split("\\s+");
-            N = Integer.parseInt(nm[0]);
-            M = Integer.parseInt(nm[1]);
+        this.N = N;
+        this.M = M;
 
-            maze = new char[N][M];
-            visited = new boolean[N][M];
-            path = new boolean[N][M];
-            result = new boolean[N][M];
-
-            for (int i = 0; i < N; i++) {
-                String line = scanner.nextLine();
-                if (line.length() != M) {
-                    throw new IllegalArgumentException("Maze file " + filename + " is invalid");
+        maze = new char[N][M];
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < M; j++) {
+                if (i % 2 == 0 || j % 2 == 0) {
+                    maze[i][j] = WALL;
+                } else {
+                    maze[i][j] = ROAD;
                 }
-                for (int j = 0; j < M; j++) {
-                    maze[i][j] = line.charAt(j);
-                    visited[i][j] = false;
-                    path[i][j] = false;
-                    result[i][j] = false;
-                }
-            }
 
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (scanner != null) {
-                scanner.close();
             }
         }
         entranceX = 1;
         entranceY = 0;
         exitX = N - 2;
         exitY = M - 1;
+        maze[entranceX][entranceY] = ROAD;
+        maze[exitX][exitY] = ROAD;
     }
 
     public int N() {
@@ -75,19 +51,20 @@ public class MazeData {
         return M;
     }
 
-    public int getEntranceX() {  return entranceX; }
+    public int getEntranceX() {
+        return entranceX;
+    }
 
-    public int getEntranceY() {  return entranceY; }
+    public int getEntranceY() {
+        return entranceY;
+    }
 
-    public int getExitX() {  return exitX; }
+    public int getExitX() {
+        return exitX;
+    }
 
-    public int getExitY() {  return exitY; }
-
-    public char getMaze(int i, int j) {
-        if (!inArea(i, j)) {
-            throw new IllegalArgumentException("i or j is out of index in getMaze!");
-        }
-        return maze[i][j];
+    public int getExitY() {
+        return exitY;
     }
 
     public boolean inArea(int x, int y) {
@@ -103,4 +80,6 @@ public class MazeData {
             System.out.println();
         }
     }
+
+
 }
