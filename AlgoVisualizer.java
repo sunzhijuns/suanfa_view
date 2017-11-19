@@ -11,8 +11,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class AlgoVisualizer {
     private static final int[][] d = new int[][]{{-1,0},{0,1},{1,0},{0,-1}};
 
-    private int DELAY = 10;
-    private int blockSize = 8;
+    private int DELAY = 1000;
+    private int blockSize = 16;
 
     private MazeData data;   // 数据
     private AlgoFrame frame; //视图
@@ -29,13 +29,33 @@ public class AlgoVisualizer {
 //                long endTime = System.currentTimeMillis();
 ////                System.out.println("绘制耗时 : " + (endTime-startTime) + "ms" );
 
+        setData(-1,-1);
+        go(data.getEntranceX(), data.getEntranceY() + 1);
+        data.print();
 
-
-        setData();
+        setData(-1,-1);
 
     }
+    private void go(int x, int y){
+        if (!data.inArea(x,y)){
+            throw new IllegalArgumentException("out of area in go");
+        }
+        data.visited[x][y] = true;
 
-    private void setData() {
+        for (int i = 0; i < 4; i++) {
+            int newX = x + d[i][0] * 2;
+            int newY = y + d[i][1] * 2;
+            if (data.inArea(newX, newY) && !data.visited[newX][newY]){
+                setData(x + d[i][0],y + d[i][1]);
+                go(newX, newY);
+            }
+        }
+    }
+
+    private void setData(int x, int y) {
+        if (data.inArea(x,y)){
+            data.maze[x][y] = MazeData.ROAD;
+        }
         frame.render(data);
         AlgoVisHelper.pause(DELAY);
 

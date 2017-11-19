@@ -25,6 +25,7 @@ public class MazeData {
         this.M = M;
 
         maze = new char[N][M];
+        visited = new boolean[N][M];
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
                 if (i % 2 == 0 || j % 2 == 0) {
@@ -32,6 +33,7 @@ public class MazeData {
                 } else {
                     maze[i][j] = ROAD;
                 }
+                visited[i][j] = false;
 
             }
         }
@@ -68,7 +70,7 @@ public class MazeData {
     }
 
     public boolean inArea(int x, int y) {
-        return x >= 0 && x < N && y >= 0 && y < N;
+        return x >= 0 && x < N && y >= 0 && y < M;
     }
 
     public void print() {
