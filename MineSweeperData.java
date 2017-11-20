@@ -19,7 +19,7 @@ public class MineSweeperData {
             int y = i % M;
             mines[x][y] = true;
         }
-        for (int i = 0; i < M*N; i++) {
+        for (int i = 0; i < mineNumber; i++) {
             int x1 = i/M;
             int y1 = i%M;
             int x2 = (int)(Math.random() * N);
