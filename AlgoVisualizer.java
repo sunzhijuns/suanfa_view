@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -24,20 +25,29 @@ public class AlgoVisualizer {
 //                long endTime = System.currentTimeMillis();
 ////                System.out.println("绘制耗时 : " + (endTime-startTime) + "ms" );
 //            }
-        setData();
+        setData(false, -1, -1);
 
     }
 
-    private void setData() {
+    private void setData(boolean isLeftClicked, int x , int y) {
+        if (data.isInArea(x,y)){
+            if (isLeftClicked){
+                if(!data.flags[x][y]){
+                    data.open[x][y] = true;
+                }
+            }else{
+                data.flags[x][y] = !data.flags[x][y];
+            }
+        }
         frame.render(data);
         AlgoVisHelper.pause(DELAY);
     }
 
     public AlgoVisualizer(int N, int M, int mineNumber) {
         // 初始化数据
-        this.sceneWidth = M*blockSize;
-        this.sceneHeight = N*blockSize;
-        data = new MineSweeperData(N,M,mineNumber);
+        this.sceneWidth = M * blockSize;
+        this.sceneHeight = N * blockSize;
+        data = new MineSweeperData(N, M, mineNumber);
     }
 
     public void start() {
@@ -45,6 +55,7 @@ public class AlgoVisualizer {
         EventQueue.invokeLater(() -> {
             frame = new AlgoFrame("Mine Sweeper", sceneWidth, sceneHeight);
             frame.addKeyListener(new AlgoKeyListener());
+            frame.addMouseListener(new AlgoMouseListener());
             new Thread(() -> {
                 run();
             }).start();
@@ -53,10 +64,22 @@ public class AlgoVisualizer {
 
     private class AlgoMouseListener extends MouseAdapter {
         @Override
-        public void mousePressed(MouseEvent e) {
+        public void mouseReleased(MouseEvent e) {
             e.translatePoint(-9, -38);
-            isAnimated = !isAnimated;
             System.out.println(e.getPoint());
+            Point pos = e.getPoint();
+            int w = frame.getCanvasWidth() / data.M();
+            int h = frame.getCanvasHeight() / data.N();
+
+            int x = pos.y / h;
+            int y = pos.x / w;
+
+            if (SwingUtilities.isLeftMouseButton(e)) {
+                setData(true, x,y);
+            } else {
+                setData(false, x,y);
+            }
+
         }
     }
 
