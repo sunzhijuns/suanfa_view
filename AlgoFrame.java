@@ -30,9 +30,9 @@ public class AlgoFrame extends JFrame {
     }
 
     // 自己的数据
-    private InsertionSortData data;
+    private MineSweeperData data;
 
-    public void render(InsertionSortData data) {
+    public void render(MineSweeperData data) {
         this.data = data;
         repaint();
     }
@@ -51,17 +51,17 @@ public class AlgoFrame extends JFrame {
             g2d.addRenderingHints(hints);
 
             // 具体绘制
-            int w = canvasWidth / data.N();
+            int w = canvasWidth/data.M();
+            int h = canvasHeight/data.N();
             for (int i = 0; i < data.N(); i++) {
-                if (i < data.orderedIndex) {
-                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.Red);
-                } else {
-                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.Grey);
+                for (int j = 0; j < data.M(); j++) {
+                    if (data.isMine(i,j)){
+                        AlgoVisHelper.putImage(g2d,j*w,i*h,MineSweeperData.mineImageURL);
+
+                    }else{
+                        AlgoVisHelper.putImage(g2d,j*w,i*h,MineSweeperData.blockImageURL);
+                    }
                 }
-                if (i == data.currentIndex) {
-                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.LightBlue);
-                }
-                AlgoVisHelper.fillRectangle(g2d, i * w, canvasHeight - data.get(i), w - 1, data.get(i));
             }
         }
 
