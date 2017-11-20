@@ -19,12 +19,13 @@ public class MineSweeperData {
             int y = i % M;
             mines[x][y] = true;
         }
-        for (int i = 0; i < mineNumber; i++) {
-            int x1 = i/M;
-            int y1 = i%M;
-            int x2 = (int)(Math.random() * N);
-            int y2 = (int)(Math.random() * M);
-            swap(x1,y1,x2,y2);
+        for (int i = N*M-1; i >= 0; i--) {
+            int iX = i/M;
+            int iY = i%M;
+            int randomNumber = (int)(Math.random() * (i + 1));
+            int randX = randomNumber/M;
+            int randY = randomNumber%M;
+            swap(iX,iY,randX,randY);
         }
     }
     private void swap(int x1, int y1, int x2, int y2){
