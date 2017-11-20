@@ -19,10 +19,9 @@ public class MineSweeperData {
             int y = i % M;
             mines[x][y] = true;
         }
-        int swapTimes = M * N;
-        for (int i = 0; i < swapTimes; i++) {
-            int x1 = (int)(Math.random() * N);
-            int y1 = (int)(Math.random() * M);
+        for (int i = 0; i < M*N; i++) {
+            int x1 = i/M;
+            int y1 = i%M;
             int x2 = (int)(Math.random() * N);
             int y2 = (int)(Math.random() * M);
             swap(x1,y1,x2,y2);
