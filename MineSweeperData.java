@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+
 public class MineSweeperData {
     public static final String blockImageURL = "resources/block.png";
     public static final String flagImageURL = "resources/flag.png";
@@ -91,6 +93,37 @@ public class MineSweeperData {
             throw new IllegalArgumentException("Out of index in isMine function!");
         }
         return mines[x][y];
+    }
+    public void open(int x, int y){
+        if (!isInArea(x,y)){
+            throw new IllegalArgumentException("Out of index in open function!");
+        }
+        if (mines[x][y]){
+            throw new IllegalArgumentException("Have mine open function!");
+        }
+        LinkedList<Position> queue = new LinkedList<Position>();
+        if (numbers[x][y] == 0){
+            queue.addLast(new Position(x,y));
+        }
+        open[x][y] = true;
+
+        while (!queue.isEmpty()){
+            Position pos = queue.removeFirst();
+            x = pos.getX();
+            y = pos.getY();
+            for (int i = x-1; i <= x+1; i++) {
+                for (int j = y-1; j <= y+1; j++) {
+                    int newX = i;
+                    int newY = j;
+                    if (isInArea(newX,newY)) {
+                        if(!open[newX][newY] && numbers[newX][newY] == 0){
+                            queue.addLast(new Position(newX, newY));
+                        }
+                        open[newX][newY] = true;
+                    }
+                }
+            }
+        }
     }
 
     private void calculateNumbers() {

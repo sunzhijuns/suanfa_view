@@ -29,11 +29,17 @@ public class AlgoVisualizer {
 
     }
 
+
     private void setData(boolean isLeftClicked, int x , int y) {
         if (data.isInArea(x,y)){
             if (isLeftClicked){
                 if(!data.flags[x][y]){
-                    data.open[x][y] = true;
+                    if (data.isMine(x,y)){
+                        System.out.println("Game Over");
+                        data.open[x][y] = true;
+                    }else{
+                        data.open(x,y);
+                    }
                 }
             }else{
                 data.flags[x][y] = !data.flags[x][y];
@@ -66,7 +72,7 @@ public class AlgoVisualizer {
         @Override
         public void mouseReleased(MouseEvent e) {
             e.translatePoint(-9, -38);
-            System.out.println(e.getPoint());
+//            System.out.println(e.getPoint());
             Point pos = e.getPoint();
             int w = frame.getCanvasWidth() / data.M();
             int h = frame.getCanvasHeight() / data.N();
