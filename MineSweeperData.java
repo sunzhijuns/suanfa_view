@@ -15,17 +15,23 @@ public class MineSweeperData {
 
     private void generateMines(int mineNumber){
         for (int i = 0; i < mineNumber; i++) {
-            while (true){
-                int x = (int)(Math.random() * N);
-                int y = (int)(Math.random()*M);
-                if (!mines[x][y]){
-                    mines[x][y] = true;
-                    break;
-                }
-            }
-
+            int x = i / M;
+            int y = i % M;
+            mines[x][y] = true;
         }
-
+        int swapTimes = M * N;
+        for (int i = 0; i < swapTimes; i++) {
+            int x1 = (int)(Math.random() * N);
+            int y1 = (int)(Math.random() * M);
+            int x2 = (int)(Math.random() * N);
+            int y2 = (int)(Math.random() * M);
+            swap(x1,y1,x2,y2);
+        }
+    }
+    private void swap(int x1, int y1, int x2, int y2){
+        boolean t = mines[x1][y1];
+        mines[x1][y1] = mines[x2][y2];
+        mines[x2][y2] = t;
     }
     public MineSweeperData(int n, int m, int mineNumber) {
         if (n <= 0 || m <= 0){
