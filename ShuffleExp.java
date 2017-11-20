@@ -28,12 +28,20 @@ public class ShuffleExp {
 //            int j = (int)(Math.random() * n);
 //            swap(arr,i,j);
 //        }
-
-        for (int i = 0; i < n*5; i++) {
-            int j = (int)(Math.random() * n);
-            int k = (int)(Math.random() * n);
-            swap(arr,k,j);
+//        for (int i = 0; i < n; i++) {
+//            int j = (int)(Math.random() * (n-i)) + i;
+//            swap(arr,i,j);
+//        }
+        for (int i = n-1; i >= 0; i--) {
+            int j = (int)(Math.random() * (i+1));
+            swap(arr,i,j);
         }
+
+//        for (int i = 0; i < n*5; i++) {
+//            int j = (int)(Math.random() * n);
+//            int k = (int)(Math.random() * n);
+//            swap(arr,k,j);
+//        }
     }
     private void swap(int arr[], int i, int j){
         int t = arr[i];
