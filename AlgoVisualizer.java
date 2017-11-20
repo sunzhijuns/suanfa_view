@@ -4,9 +4,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.LinkedList;
 
 public class AlgoVisualizer {
-    private int DELAY = 200;
+    private int DELAY = 100;
     private long count = 0;
     private int blockSize = 32;
 
@@ -29,6 +30,38 @@ public class AlgoVisualizer {
 
     }
 
+    private void open(int x, int y){
+        if (!data.isInArea(x,y)){
+            throw new IllegalArgumentException("Out of index in open function!");
+        }
+        if (data.isMine(x,y)){
+            throw new IllegalArgumentException("Have mine open function!");
+        }
+        LinkedList<Position> queue = new LinkedList<Position>();
+        if (data.getNumber(x,y) == 0){
+            queue.addLast(new Position(x,y));
+        }
+        data.open[x][y] = true;
+        setData(false, -1,-1);
+        while (!queue.isEmpty()){
+            Position pos = queue.removeFirst();
+            x = pos.getX();
+            y = pos.getY();
+            for (int i = x-1; i <= x+1; i++) {
+                for (int j = y-1; j <= y+1; j++) {
+                    int newX = i;
+                    int newY = j;
+                    if (data.isInArea(newX,newY)) {
+                        if(!data.open[newX][newY] && data.getNumber(newX,newY) == 0){
+                            queue.addLast(new Position(newX, newY));
+                        }
+                        data.open[newX][newY] = true;
+                        setData(false, -1,-1);
+                    }
+                }
+            }
+        }
+    }
 
     private void setData(boolean isLeftClicked, int x , int y) {
         if (data.isInArea(x,y)){
@@ -38,7 +71,7 @@ public class AlgoVisualizer {
                         System.out.println("Game Over");
                         data.open[x][y] = true;
                     }else{
-                        data.open(x,y);
+                        open(x,y);
                     }
                 }
             }else{
@@ -72,7 +105,7 @@ public class AlgoVisualizer {
         @Override
         public void mouseReleased(MouseEvent e) {
             e.translatePoint(-9, -38);
-//            System.out.println(e.getPoint());
+            System.out.println(e.getPoint());
             Point pos = e.getPoint();
             int w = frame.getCanvasWidth() / data.M();
             int h = frame.getCanvasHeight() / data.N();
@@ -80,11 +113,14 @@ public class AlgoVisualizer {
             int x = pos.y / h;
             int y = pos.x / w;
 
-            if (SwingUtilities.isLeftMouseButton(e)) {
-                setData(true, x,y);
-            } else {
-                setData(false, x,y);
-            }
+
+            new Thread(() -> {
+                if (SwingUtilities.isLeftMouseButton(e)) {
+                    setData(true, x,y);
+                } else {
+                    setData(false, x,y);
+                }
+            }).start();
 
         }
     }
