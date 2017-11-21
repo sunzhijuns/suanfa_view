@@ -8,7 +8,7 @@ public class AlgoVisualizer {
     private int DELAY = 200;
     private long count = 0;
 
-    private CircleData data;   // 数据
+    private FractalData data;   // 数据
     private AlgoFrame frame; //视图
     private int sceneWidth;
     private int sceneHeight;
@@ -32,12 +32,11 @@ public class AlgoVisualizer {
         AlgoVisHelper.pause(DELAY);
     }
 
-    public AlgoVisualizer(int sceneWidth, int sceneHeight) {
+    public AlgoVisualizer(int depth) {
         // 初始化数据
-        this.sceneWidth = sceneWidth;
-        this.sceneHeight = sceneHeight;
-        int R = Math.min(sceneHeight,sceneWidth) / 2 - 2;
-        data = new CircleData(sceneWidth/2,sceneHeight/2,R,R/2,2);
+        this.sceneWidth = (int)Math.pow(3,depth);
+        this.sceneHeight = (int)Math.pow(3,depth);
+        data = new FractalData(depth);
     }
 
     public void start() {

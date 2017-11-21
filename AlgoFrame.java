@@ -30,9 +30,9 @@ public class AlgoFrame extends JFrame {
     }
 
     // 自己的数据
-    private CircleData data;
+    private FractalData data;
 
-    public void render(CircleData data) {
+    public void render(FractalData data) {
         this.data = data;
         repaint();
     }
@@ -51,16 +51,30 @@ public class AlgoFrame extends JFrame {
             g2d.addRenderingHints(hints);
 
             // 具体绘制
-            drawCircle(g2d,data.getStartX(),data.getStartY(),data.getStartR(),0);
+            drawFractal(g2d, 0, 0, canvasWidth, canvasHeight, 0);
 
         }
-        private void drawCircle(Graphics2D g,int x, int y, int r, int depth){
-            if (data.getDepth() == depth || r < 1){
+
+        private void drawFractal(Graphics2D g, int x, int y, int w, int h, int depth) {
+            if (data.getDepth() == depth) {
+                AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
+                AlgoVisHelper.fillRectangle(g, x, y, w, h);
                 return;
             }
-            AlgoVisHelper.setColor(g,new Color((int)(Math.random() * 0xFFFFFF)));
-            AlgoVisHelper.fillCircle(g,x,y,r);
-            drawCircle(g,x,y,r-data.getStep(),depth+1);
+            if (w <= 1 || h <= 1) {
+                AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
+                AlgoVisHelper.fillRectangle(g, x, y, Math.max(w, 1), Math.max(h, 1));
+                return;
+            }
+
+            int w_3 = w / 3;
+            int h_3 = h / 3;
+            drawFractal(g, x + w_3 * 0, y + h_3 * 0, w_3, h_3, depth + 1);
+            drawFractal(g, x + w_3 * 2, y + h_3 * 0, w_3, h_3, depth + 1);
+            drawFractal(g, x + w_3 * 1, y + h_3 * 1, w_3, h_3, depth + 1);
+            drawFractal(g, x + w_3 * 0, y + h_3 * 2, w_3, h_3, depth + 1);
+            drawFractal(g, x + w_3 * 2, y + h_3 * 2, w_3, h_3, depth + 1);
+
         }
 
         @Override
