@@ -24,19 +24,22 @@ public class AlgoVisualizer {
 //                long endTime = System.currentTimeMillis();
 ////                System.out.println("绘制耗时 : " + (endTime-startTime) + "ms" );
 //            }
-        setData();
+        setData(data.getDepth());
     }
 
-    private void setData() {
+    private void setData(int depth) {
+        data.setDepth(depth);
         frame.render(data);
         AlgoVisHelper.pause(DELAY);
     }
 
-    public AlgoVisualizer(int depth) {
+    public AlgoVisualizer(int maxDepth) {
         // 初始化数据
-        this.sceneWidth = (int)Math.pow(3,depth);
-        this.sceneHeight = (int)Math.pow(3,depth);
-        data = new FractalData(depth);
+        this.sceneWidth = (int)Math.pow(3,maxDepth);
+        this.sceneHeight = (int)Math.pow(3,maxDepth);
+//        this.sceneWidth = 1600;
+//        this.sceneHeight = 900;
+        data = new FractalData(maxDepth);
     }
 
     public void start() {
@@ -64,8 +67,11 @@ public class AlgoVisualizer {
     private class AlgoKeyListener extends KeyAdapter {
         @Override
         public void keyReleased(KeyEvent e) {
-            if (e.getKeyChar() == ' ') {
-                isAnimated = !isAnimated;
+            if (e.getKeyChar() >= '0' && e.getKeyChar() <= '9') {
+                int depth = e.getKeyChar()-'0';
+                System.out.println(1111);
+                setData(depth);
+
             }
 
         }

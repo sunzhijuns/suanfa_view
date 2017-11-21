@@ -7,4 +7,10 @@ public class FractalData {
     public int getDepth() {
         return depth;
     }
+
+    public void setDepth(int depth) {
+        if (depth>=0){
+            this.depth = depth;
+        }
+    }
 }

@@ -59,21 +59,29 @@ public class AlgoFrame extends JFrame {
             if (data.getDepth() == depth) {
                 AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
                 AlgoVisHelper.fillRectangle(g, x, y, w, h);
+//                System.out.println("==depth");
                 return;
             }
             if (w <= 1 || h <= 1) {
                 AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
                 AlgoVisHelper.fillRectangle(g, x, y, Math.max(w, 1), Math.max(h, 1));
+                System.out.println("<1");
                 return;
             }
 
             int w_3 = w / 3;
             int h_3 = h / 3;
-            drawFractal(g, x + w_3 * 0, y + h_3 * 0, w_3, h_3, depth + 1);
-            drawFractal(g, x + w_3 * 2, y + h_3 * 0, w_3, h_3, depth + 1);
+//            drawFractal(g, x + w_3 * 0, y + h_3 * 0, w_3, h_3, depth + 1);
+//            drawFractal(g, x + w_3 * 2, y + h_3 * 0, w_3, h_3, depth + 1);
+//            drawFractal(g, x + w_3 * 1, y + h_3 * 1, w_3, h_3, depth + 1);
+//            drawFractal(g, x + w_3 * 0, y + h_3 * 2, w_3, h_3, depth + 1);
+//            drawFractal(g, x + w_3 * 2, y + h_3 * 2, w_3, h_3, depth + 1);
+
+            drawFractal(g, x + w_3 * 1, y + h_3 * 0, w_3, h_3, depth + 1);
+            drawFractal(g, x + w_3 * 0, y + h_3 * 1, w_3, h_3, depth + 1);
             drawFractal(g, x + w_3 * 1, y + h_3 * 1, w_3, h_3, depth + 1);
-            drawFractal(g, x + w_3 * 0, y + h_3 * 2, w_3, h_3, depth + 1);
-            drawFractal(g, x + w_3 * 2, y + h_3 * 2, w_3, h_3, depth + 1);
+            drawFractal(g, x + w_3 * 2, y + h_3 * 1, w_3, h_3, depth + 1);
+            drawFractal(g, x + w_3 * 1, y + h_3 * 2, w_3, h_3, depth + 1);
 
         }
 
