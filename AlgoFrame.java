@@ -58,14 +58,18 @@ public class AlgoFrame extends JFrame {
         private void drawFractal(Graphics2D g, int x, int y, int w, int h, int depth) {
             if (data.getDepth() == depth) {
                 AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
-                AlgoVisHelper.fillRectangle(g, x, y, w, h);
+                int w_3 = w / 3;
+                int h_3 = h / 3;
+                AlgoVisHelper.fillRectangle(g, x + w_3, y + h_3, w_3, h_3);
 //                System.out.println("==depth");
                 return;
             }
-            if (w <= 1 || h <= 1) {
-                AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
-                AlgoVisHelper.fillRectangle(g, x, y, Math.max(w, 1), Math.max(h, 1));
-                System.out.println("<1");
+            if (w <= 3 || h <= 3) {
+//                AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
+//                int w_3 = Math.max(w/3, 3) ;
+//                int h_3 = Math.max(h/3, 3);
+//                AlgoVisHelper.fillRectangle(g, x+w_3, y+h_3, w_3, h_3);
+                System.out.println("<3");
                 return;
             }
 
@@ -77,12 +81,23 @@ public class AlgoFrame extends JFrame {
 //            drawFractal(g, x + w_3 * 0, y + h_3 * 2, w_3, h_3, depth + 1);
 //            drawFractal(g, x + w_3 * 2, y + h_3 * 2, w_3, h_3, depth + 1);
 
-            drawFractal(g, x + w_3 * 1, y + h_3 * 0, w_3, h_3, depth + 1);
-            drawFractal(g, x + w_3 * 0, y + h_3 * 1, w_3, h_3, depth + 1);
-            drawFractal(g, x + w_3 * 1, y + h_3 * 1, w_3, h_3, depth + 1);
-            drawFractal(g, x + w_3 * 2, y + h_3 * 1, w_3, h_3, depth + 1);
-            drawFractal(g, x + w_3 * 1, y + h_3 * 2, w_3, h_3, depth + 1);
+//            drawFractal(g, x + w_3 * 1, y + h_3 * 0, w_3, h_3, depth + 1);
+//            drawFractal(g, x + w_3 * 0, y + h_3 * 1, w_3, h_3, depth + 1);
+//            drawFractal(g, x + w_3 * 1, y + h_3 * 1, w_3, h_3, depth + 1);
+//            drawFractal(g, x + w_3 * 2, y + h_3 * 1, w_3, h_3, depth + 1);
+//            drawFractal(g, x + w_3 * 1, y + h_3 * 2, w_3, h_3, depth + 1);
 
+            AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
+            AlgoVisHelper.fillRectangle(g, x + w_3, y + h_3, w_3, h_3);
+
+            drawFractal(g, x + w_3 * 0, y + h_3 * 0, w_3, h_3, depth + 1);
+            drawFractal(g, x + w_3 * 1, y + h_3 * 0, w_3, h_3, depth + 1);
+            drawFractal(g, x + w_3 * 2, y + h_3 * 0, w_3, h_3, depth + 1);
+            drawFractal(g, x + w_3 * 0, y + h_3 * 1, w_3, h_3, depth + 1);
+            drawFractal(g, x + w_3 * 2, y + h_3 * 1, w_3, h_3, depth + 1);
+            drawFractal(g, x + w_3 * 0, y + h_3 * 2, w_3, h_3, depth + 1);
+            drawFractal(g, x + w_3 * 1, y + h_3 * 2, w_3, h_3, depth + 1);
+            drawFractal(g, x + w_3 * 2, y + h_3 * 2, w_3, h_3, depth + 1);
         }
 
         @Override
