@@ -8,7 +8,7 @@ public class AlgoVisualizer {
     private int DELAY = 200;
     private long count = 0;
 
-    private InsertionSortData data;   // 数据
+    private CircleData data;   // 数据
     private AlgoFrame frame; //视图
     private int sceneWidth;
     private int sceneHeight;
@@ -24,44 +24,26 @@ public class AlgoVisualizer {
 //                long endTime = System.currentTimeMillis();
 ////                System.out.println("绘制耗时 : " + (endTime-startTime) + "ms" );
 //            }
-        setData(0, -1);
-        for (int i = 0; i < data.N(); i++) {
-            int e = data.get(i);
-            int j = i;
-            setData(i, i);
-            for (; j > 0 && data.get(j - 1) > e; j--) {
-                data.set(j, data.get(j - 1));
-                setData(i + 1, j-1);
-
-            }
-            data.set(j, e);
-            setData(i + 1, j);
-        }
-        setData(data.N(), -1);
+        setData();
     }
 
-    private void setData(int orderedIndex, int currentIndex) {
-        data.orderedIndex = orderedIndex;
-        data.currentIndex = currentIndex;
+    private void setData() {
         frame.render(data);
         AlgoVisHelper.pause(DELAY);
     }
-    public AlgoVisualizer(int sceneWidth, int sceneHeight, long N){
-        this(sceneWidth, sceneHeight, N, InsertionSortData.Type.Default);
-    }
 
-    public AlgoVisualizer(int sceneWidth, int sceneHeight, long N, InsertionSortData.Type dataType) {
+    public AlgoVisualizer(int sceneWidth, int sceneHeight) {
         // 初始化数据
-        this.N = N;
         this.sceneWidth = sceneWidth;
         this.sceneHeight = sceneHeight;
-        data = new InsertionSortData((int) N, sceneHeight, dataType);
+        int R = Math.min(sceneHeight,sceneWidth) / 2 - 2;
+        data = new CircleData(sceneWidth/2,sceneHeight/2,R,R/2,2);
     }
 
     public void start() {
         // 初始化视图
         EventQueue.invokeLater(() -> {
-            frame = new AlgoFrame("SelectionSort", sceneWidth, sceneHeight);
+            frame = new AlgoFrame("Fractal", sceneWidth, sceneHeight);
             frame.addKeyListener(new AlgoKeyListener());
             new Thread(() -> {
                 run();

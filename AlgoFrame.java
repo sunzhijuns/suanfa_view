@@ -30,9 +30,9 @@ public class AlgoFrame extends JFrame {
     }
 
     // 自己的数据
-    private InsertionSortData data;
+    private CircleData data;
 
-    public void render(InsertionSortData data) {
+    public void render(CircleData data) {
         this.data = data;
         repaint();
     }
@@ -51,18 +51,16 @@ public class AlgoFrame extends JFrame {
             g2d.addRenderingHints(hints);
 
             // 具体绘制
-            int w = canvasWidth / data.N();
-            for (int i = 0; i < data.N(); i++) {
-                if (i < data.orderedIndex) {
-                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.Red);
-                } else {
-                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.Grey);
-                }
-                if (i == data.currentIndex) {
-                    AlgoVisHelper.setColor(g2d, AlgoVisHelper.LightBlue);
-                }
-                AlgoVisHelper.fillRectangle(g2d, i * w, canvasHeight - data.get(i), w - 1, data.get(i));
+            drawCircle(g2d,data.getStartX(),data.getStartY(),data.getStartR(),0);
+
+        }
+        private void drawCircle(Graphics2D g,int x, int y, int r, int depth){
+            if (data.getDepth() == depth || r < 1){
+                return;
             }
+            AlgoVisHelper.setColor(g,new Color((int)(Math.random() * 0xFFFFFF)));
+            AlgoVisHelper.fillCircle(g,x,y,r);
+            drawCircle(g,x,y,r-data.getStep(),depth+1);
         }
 
         @Override
