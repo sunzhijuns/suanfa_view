@@ -51,53 +51,37 @@ public class AlgoFrame extends JFrame {
             g2d.addRenderingHints(hints);
 
             // 具体绘制
-            drawFractal(g2d, 0, 0, canvasWidth, canvasHeight, 0);
+            drawFractal(g2d, 0, canvasHeight, canvasWidth, 0);
 
         }
 
-        private void drawFractal(Graphics2D g, int x, int y, int w, int h, int depth) {
+        private void drawFractal(Graphics2D g, int Ax, int Ay, int side, int depth) {
+            if (side <= 1) {
+                AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
+                AlgoVisHelper.fillRectangle(g, Ax, Ay, 1, 1);
+                return;
+            }
             if (data.getDepth() == depth) {
                 AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
-                int w_3 = w / 3;
-                int h_3 = h / 3;
-                AlgoVisHelper.fillRectangle(g, x + w_3, y + h_3, w_3, h_3);
-//                System.out.println("==depth");
-                return;
-            }
-            if (w <= 3 || h <= 3) {
-//                AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
-//                int w_3 = Math.max(w/3, 3) ;
-//                int h_3 = Math.max(h/3, 3);
-//                AlgoVisHelper.fillRectangle(g, x+w_3, y+h_3, w_3, h_3);
-                System.out.println("<3");
+                int Bx = Ax + side;
+                int By = Ay;
+                int Cx = Ax + side / 2;
+                int Cy = Ay - (int) (side * Math.sin(Math.PI / 3));
+                AlgoVisHelper.fillTriangle(g, Ax, Ay, Bx, By, Cx, Cy);
                 return;
             }
 
-            int w_3 = w / 3;
-            int h_3 = h / 3;
-//            drawFractal(g, x + w_3 * 0, y + h_3 * 0, w_3, h_3, depth + 1);
-//            drawFractal(g, x + w_3 * 2, y + h_3 * 0, w_3, h_3, depth + 1);
-//            drawFractal(g, x + w_3 * 1, y + h_3 * 1, w_3, h_3, depth + 1);
-//            drawFractal(g, x + w_3 * 0, y + h_3 * 2, w_3, h_3, depth + 1);
-//            drawFractal(g, x + w_3 * 2, y + h_3 * 2, w_3, h_3, depth + 1);
+            int Bx = Ax + side;
+            int By = Ay;
+            int Cx = Ax + side / 2;
+            int Cy = Ay - (int) (side * Math.sin(Math.PI / 3));
+            side /= 2;
 
-//            drawFractal(g, x + w_3 * 1, y + h_3 * 0, w_3, h_3, depth + 1);
-//            drawFractal(g, x + w_3 * 0, y + h_3 * 1, w_3, h_3, depth + 1);
-//            drawFractal(g, x + w_3 * 1, y + h_3 * 1, w_3, h_3, depth + 1);
-//            drawFractal(g, x + w_3 * 2, y + h_3 * 1, w_3, h_3, depth + 1);
-//            drawFractal(g, x + w_3 * 1, y + h_3 * 2, w_3, h_3, depth + 1);
+            drawFractal(g, Ax + 0, Ay + 0, side + 0, depth + 1);
+            drawFractal(g, (Ax + Bx) / 2, (Ay + By) / 2, side + 0, depth + 1);
+            drawFractal(g, (Ax + Cx) / 2, (Ay + Cy) / 2, side + 0, depth + 1);
 
-            AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
-            AlgoVisHelper.fillRectangle(g, x + w_3, y + h_3, w_3, h_3);
 
-            drawFractal(g, x + w_3 * 0, y + h_3 * 0, w_3, h_3, depth + 1);
-            drawFractal(g, x + w_3 * 1, y + h_3 * 0, w_3, h_3, depth + 1);
-            drawFractal(g, x + w_3 * 2, y + h_3 * 0, w_3, h_3, depth + 1);
-            drawFractal(g, x + w_3 * 0, y + h_3 * 1, w_3, h_3, depth + 1);
-            drawFractal(g, x + w_3 * 2, y + h_3 * 1, w_3, h_3, depth + 1);
-            drawFractal(g, x + w_3 * 0, y + h_3 * 2, w_3, h_3, depth + 1);
-            drawFractal(g, x + w_3 * 1, y + h_3 * 2, w_3, h_3, depth + 1);
-            drawFractal(g, x + w_3 * 2, y + h_3 * 2, w_3, h_3, depth + 1);
         }
 
         @Override
