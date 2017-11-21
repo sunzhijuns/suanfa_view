@@ -3,6 +3,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.GeneralPath;
+import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
 
 public class AlgoVisHelper {
@@ -96,8 +97,9 @@ public class AlgoVisHelper {
         path.closePath();
         g2d.fill(path);
     }
-    public static void drawLine(Graphics2D g2d, int x1, int y1,
-                                    int x2, int y2) {
-        g2d.drawLine(x1,y1,x2,y2);
+    public static void drawLine(Graphics2D g2d, double x1, double y1,
+                                    double x2, double y2) {
+        Line2D line = new Line2D.Double(x1,y1,x2,y2);
+        g2d.draw(line);
     }
 }

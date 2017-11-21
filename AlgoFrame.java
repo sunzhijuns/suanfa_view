@@ -53,7 +53,7 @@ public class AlgoFrame extends JFrame {
             // 具体绘制
 //            AlgoVisHelper.setStrokeWidth(g2d,6);
 //            AlgoVisHelper.drawLine(g2d,0,100,400,100);
-            drawFractal(g2d, 0, canvasHeight / 2, canvasWidth + 0, canvasHeight / 2, 0);
+            drawFractal(g2d, 0, canvasHeight / 5, canvasWidth + 0, canvasHeight / 5, 0);
 
         }
 
@@ -78,8 +78,8 @@ public class AlgoFrame extends JFrame {
             int Bx = x1 + 2 * (x2 - x1) / 3;
             int By = y1 + 2 * (y2 - y1) / 3;
 
-            int Cx = x1 + (x2 - x1) / 2 + (int) (-y12 * Math.sin(Math.PI / 2) / 3);
-            int Cy = y1 + (y2 - y1) / 2 + (int) (x12 * Math.sin(Math.PI / 2) / 3);
+            int Cx = x1 + (x2 - x1) / 2 + (int) (-y12 * Math.sin(Math.PI / 3) / 3);
+            int Cy = y1 + (y2 - y1) / 2 + (int) (x12 * Math.sin(Math.PI / 3) / 3);
 
             drawFractal(g, x1 + 0, y1 + 0, Ax + 0, Ay + 0, depth + 1);
             drawFractal(g, Ax + 0, Ay + 0, Cx + 0, Cy + 0, depth + 1);
