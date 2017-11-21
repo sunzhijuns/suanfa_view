@@ -33,10 +33,10 @@ public class AlgoVisualizer {
         AlgoVisHelper.pause(DELAY);
     }
 
-    public AlgoVisualizer(int maxDepth) {
+    public AlgoVisualizer(int maxDepth,int side) {
         // 初始化数据
-        this.sceneWidth = (int)Math.pow(2,maxDepth);
-        this.sceneHeight = (int)Math.pow(2,maxDepth);
+        this.sceneWidth = side;
+        this.sceneHeight = side;
 //        this.sceneWidth = 1600;
 //        this.sceneHeight = 900;
         data = new FractalData(maxDepth);

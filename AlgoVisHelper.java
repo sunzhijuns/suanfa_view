@@ -96,4 +96,8 @@ public class AlgoVisHelper {
         path.closePath();
         g2d.fill(path);
     }
+    public static void drawLine(Graphics2D g2d, int x1, int y1,
+                                    int x2, int y2) {
+        g2d.drawLine(x1,y1,x2,y2);
+    }
 }

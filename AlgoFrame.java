@@ -51,35 +51,40 @@ public class AlgoFrame extends JFrame {
             g2d.addRenderingHints(hints);
 
             // 具体绘制
-            drawFractal(g2d, 0, canvasHeight, canvasWidth, 0);
+//            AlgoVisHelper.setStrokeWidth(g2d,6);
+//            AlgoVisHelper.drawLine(g2d,0,100,400,100);
+            drawFractal(g2d, 0, canvasHeight / 2, canvasWidth + 0, canvasHeight / 2, 0);
 
         }
 
-        private void drawFractal(Graphics2D g, int Ax, int Ay, int side, int depth) {
-            if (side <= 1) {
+        private void drawFractal(Graphics2D g, int x1, int y1, int x2, int y2, int depth) {
+            double w = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+            if (w <= 3) {
                 AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
-                AlgoVisHelper.fillRectangle(g, Ax, Ay, 1, 1);
+                AlgoVisHelper.drawLine(g, x1, y1, x2, y2);
                 return;
             }
             if (data.getDepth() == depth) {
                 AlgoVisHelper.setColor(g, AlgoVisHelper.Indigo);
-                int Bx = Ax + side;
-                int By = Ay;
-                int Cx = Ax + side / 2;
-                int Cy = Ay - (int) (side * Math.sin(Math.PI / 3));
-                AlgoVisHelper.fillTriangle(g, Ax, Ay, Bx, By, Cx, Cy);
+                AlgoVisHelper.drawLine(g, x1, y1, x2, y2);
                 return;
             }
 
-            int Bx = Ax + side;
-            int By = Ay;
-            int Cx = Ax + side / 2;
-            int Cy = Ay - (int) (side * Math.sin(Math.PI / 3));
-            side /= 2;
+            double x12 = x2 - x1;
+            double y12 = y2 - y1;
 
-            drawFractal(g, Ax + 0, Ay + 0, side + 0, depth + 1);
-            drawFractal(g, (Ax + Bx) / 2, (Ay + By) / 2, side + 0, depth + 1);
-            drawFractal(g, (Ax + Cx) / 2, (Ay + Cy) / 2, side + 0, depth + 1);
+            int Ax = x1 + 1 * (x2 - x1) / 3;
+            int Ay = y1 + 1 * (y2 - y1) / 3;
+            int Bx = x1 + 2 * (x2 - x1) / 3;
+            int By = y1 + 2 * (y2 - y1) / 3;
+
+            int Cx = x1 + (x2 - x1) / 2 + (int) (-y12 * Math.sin(Math.PI / 2) / 3);
+            int Cy = y1 + (y2 - y1) / 2 + (int) (x12 * Math.sin(Math.PI / 2) / 3);
+
+            drawFractal(g, x1 + 0, y1 + 0, Ax + 0, Ay + 0, depth + 1);
+            drawFractal(g, Ax + 0, Ay + 0, Cx + 0, Cy + 0, depth + 1);
+            drawFractal(g, Cx + 0, Cy + 0, Bx + 0, By + 0, depth + 1);
+            drawFractal(g, Bx + 0, By + 0, x2 + 0, y2 + 0, depth + 1);
 
 
         }
